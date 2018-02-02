@@ -1,6 +1,6 @@
 """Takes origin, mode of transportation and departure time in epoch and returns the travel time
 based on the Google directions API"""
-from APIcaller import APIcaller
+from api.APIcaller import APIcaller
 
 class Google_API:
     """Class to handle the Google directions API from origin to ARN"""
@@ -38,6 +38,7 @@ class Google_API:
 
     def check_status_OK(self):
         return self.google_directions_API.check_status() == 200
+        
 
 # triptoarn = google_API("Frejgatan+16", "driving", 1517585822)
 # print(triptoarn.get_estimated_travel_time_seconds())
