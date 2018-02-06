@@ -25,7 +25,8 @@ class APIcaller():
                 elif result['status'] != 'UNKNOWN_ERROR':
                     # Many API errors cannot be fixed by a retry, e.g. INVALID_REQUEST or
                     # ZERO_RESULTS. There is no point retrying these requests.
-                    raise Exception(result['error_message'])
+                    raise Exception(result['status'])
+                
 
             if current_delay > max_delay:
                 raise Exception('Too many retry attempts.')

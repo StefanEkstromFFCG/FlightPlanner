@@ -1,6 +1,12 @@
 {
     "python.unitTest.nosetestArgs": [
-        "tests"
+        "tests",
+        "test",
+        
     ],
-    "python.unitTest.nosetestsEnabled": true
+    "python.unitTest.nosetestsEnabled": false,
+    "python.unitTest.unittestEnabled": false,
+    "python.unitTest.pyTestEnabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
 }
