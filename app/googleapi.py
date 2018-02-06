@@ -1,7 +1,6 @@
 """Takes origin, mode of transportation and arrival time in epoch and returns the travel time
 based on the Google directions API"""
 from app.apicaller import APIcaller
-# import apicaller
 
 class Google_API:
     """Class to handle the Google directions API from origin to ARN"""
@@ -10,7 +9,7 @@ class Google_API:
         self.wanted_arrival_time = arrival_time_epoch
         self.parameters = self.initialize_parameters(origin, mode, arrival_time_epoch)
         self.directions_base_url = "https://maps.googleapis.com/maps/api/directions/json"
-        self.google_directions_API = APIcaller(self.directions_base_url, self.parameters)
+        self.google_directions_API = APIcaller(self.directions_base_url)
         self.response_data = None 
 
     def initialize_parameters(self, origin, mode, arrival_time_epoch):
@@ -47,7 +46,7 @@ class Google_API:
 
 
     def collect_data(self):
-        self.response_data = self.google_directions_API.get_request_to_API()["routes"][0]["legs"][0]
+        self.response_data = self.google_directions_API.get_request_to_API(self.parameters)["routes"][0]["legs"][0]
 
     def get_estimated_travel_time_seconds(self):
         """returns the travel time"""
@@ -68,13 +67,13 @@ class Google_API:
         return eta
 
     def check_status_OK(self):
-        return self.google_directions_API.check_status() == 200
+        return self.google_directions_API.check_status(self.parameters) == 200
         
 
 # triptoarn = google_API("Frejgatan+16", "driving", 1517585822)
 # print(triptoarn.get_estimated_travel_time_seconds())
 
-# triptoarn = Google_API("Frejgatan+16", "transit", 1519822990)
-# triptoarn.initialize_API()
-# print(triptoarn.get_estimated_travel_time_seconds())
-# print(triptoarn.get_estimated_time_of_arrival())
+triptoarn = Google_API("Frejgatan+16", "transit", 1519822990)
+triptoarn.initialize_API()
+print(triptoarn.get_estimated_travel_time_seconds())
+print(triptoarn.get_estimated_time_of_arrival())
