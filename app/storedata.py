@@ -1,9 +1,18 @@
 import csv
+import copy
+import os
 
 def write_to_csv(filepath, columns, data):
-    with open(filepath, "w") as out_file:
-        csv_writer = csv.writer(out_file)
-        csv_writer.writerow(columns)
+    columns.sort()
+    is_empty = os.path.getsize(filepath) < 20
+
+    if is_empty:
+        with open(filepath, "w", newline="") as out_file:
+            csv_writer = csv.writer(out_file)
+            csv_writer.writerow(columns)
+
+    with open(filepath, "a", newline="") as out_file:
+        csv_writer = csv.writer(out_file)           
 
         for row in data:
             csv_writer.writerow( map( lambda x: row.get(x, ""), columns))
@@ -21,16 +30,21 @@ def flatten_json(json, delimiter):
     return result
 
 def flatten_all_objects(data_array):
-    flattened_data = map( lambda x: flatten_json(x, "__"), data_array)
+    flattened_data = list(map( lambda x: flatten_json(x, "__"), data_array))
     return flattened_data
 
 def column_finder(flatted_json):
-    # columns = [x for x in flatted_json.keys()]
     columns = [ x for row in flatted_json for x in row.keys() ]
-    columns = list( set( columns ) )
+    # columns = []
+    # for row in copied_flat:
+    #     for x in row.keys():
+    #         columns.append(x)
+
+    # columns = list( set( columns ) )
     return columns 
 
 def format_data_and_write_to_csv(filepath, data):
     flattened_data = flatten_all_objects(data)
     columns = column_finder(flattened_data)
     write_to_csv(filepath, columns, flattened_data)
+    

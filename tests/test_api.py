@@ -1,6 +1,8 @@
 import unittest
 from app.googleapi import Google_API
 import time
+import app.skypickerapi
+from app.apicaller import APIcaller
 
 class APITests(unittest.TestCase):
     
@@ -24,3 +26,15 @@ class APITests(unittest.TestCase):
         eta = google_API.get_estimated_time_of_arrival()
         self.assertLessEqual(eta, wanted_time_of_arrival)
 
+    def test_that_the_skypicker_api_returns_status_OK(self):
+        base_url = "https://api.skypicker.com/flights"
+        skypicker = APIcaller(base_url)
+
+        parameters = {
+            "fly_from" : "ARN",
+            "date_from" : "28/02/2018",
+            "date_to" : "28/02/2018"
+            }
+        
+        app.skypickerapi.check_status_ok(skypicker, parameters)
+        
